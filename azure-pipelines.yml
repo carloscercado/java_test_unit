@@ -1,0 +1,24 @@
+name: $(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - feature/*
+    - dev
+    - cert
+    - uat
+    - hotfix/*
+    - master
+
+pool: Default
+
+resources:
+  repositories:
+  - repository: templates
+    type: bitbucket
+    name: tuten/azure-devops-pipelines
+    endpoint: Bitbucket
+
+extends:
+  template: air/rest-login/pipeline.yml@templates
