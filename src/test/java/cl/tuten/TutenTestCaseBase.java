@@ -51,7 +51,6 @@ public class TutenTestCaseBase {
         entityManager.createNativeQuery("DELETE FROM mss_login.tuten_administrator;").executeUpdate();
         entityManager.createNativeQuery("DELETE FROM mss_login.tuten_user_role;").executeUpdate();
         entityManager.createNativeQuery("DELETE FROM mss_login.tuten_user_role;").executeUpdate();
-        entityManager.createNativeQuery("DELETE FROM mss_login.tuten_integration_error;").executeUpdate();
 
         entityManager.getTransaction().commit();
     }
