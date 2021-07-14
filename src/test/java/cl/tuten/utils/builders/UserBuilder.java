@@ -31,10 +31,10 @@ public class UserBuilder extends Builder<TutenAdministrator>{
         this.instance.setLastName("perez");
         this.instance.setUsername("bperez");
         this.instance.setActive(Boolean.TRUE);
-        this.instance.setWebToken("#");
         this.instance.setSessionToken("#");
         this.instance.setUserId(1L);
         this.instance.setPasswordHash("#");
+        this.instance.setSessionStatus("ACTIVE");
 
         return this;
     }

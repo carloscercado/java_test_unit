@@ -27,8 +27,19 @@ public class CommentsTest extends TutenTestCaseBase {
     @Test
     public void testPostResource() throws Exception{
 
+        final CommentsREST rest = (CommentsREST) container.getContext().lookup("java:global/LoginREST/CommentsREST");
+        System.setProperty("TEST_CASE", "0001");
+        final TutenAdministrator session = UserBuilder.getBuilder().withUsername("benito")
+                .withPermission("POST_RESOURCE").withId(100L).build(entityManager);
+
+        final Response response = rest.post(session.getSessionToken(), "mi titulo", "mi cuerpo");
+
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
 
     }
+
+
 
 
 }
