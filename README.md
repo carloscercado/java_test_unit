@@ -10,6 +10,12 @@ Para configurar el ambiente de pruebas, es necesario crear una base de datos en 
 
 **DB PASSWORD:** holatuten123.
 
+Si no tienes el usuario en tu base de datos, crealo.
+
+```bash
+CREATE USER tuten_user PASSWORD 'holatuten123.'	
+```
+
 Una vez creada la base de datos, restaurar el backup que esta en _/sql/db_create.sql_, para hacerlo se puede ejecutar la siguiente instrucción:
 
 ```bash
