@@ -40,6 +40,21 @@ public class LoginREST extends AbstractREST {
         try {
             final TutenAdministrator admin = administratorFacade.login(emailOrUsername.toLowerCase(), password);
 
+            if(!admin.getRole().getActive()){
+                final JsonObject json = Json.createObjectBuilder()
+                        .add("code", "ROLE_DISABLED")
+                        .add("message", "Rol esta inactivo")
+                        .build();
+                throw new TutenRESTException(Response.Status.BAD_REQUEST, json.toString());
+            }
+
+            if(admin.getRole().getRoleId().equals("OPERADORES_VENTAS") && admin.getSessionStatus().equals("ACTIVA")){
+                final JsonObject json = Json.createObjectBuilder()
+                        .add("code", "SESSION_DUPLICATED")
+                        .add("message", "Rol esta inactivo")
+                        .build();
+                throw new TutenRESTException(Response.Status.BAD_REQUEST, json.toString());
+            }
             admin.setSessionToken(TutenUtils.createJWT(admin, 15L));
 
             admin.setLastestActivityDate(new Date());

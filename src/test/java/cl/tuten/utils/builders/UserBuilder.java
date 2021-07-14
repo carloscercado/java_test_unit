@@ -50,6 +50,11 @@ public class UserBuilder extends Builder<TutenAdministrator>{
         return this;
     }
 
+    public UserBuilder logout(){
+        this.instance.setSessionStatus("INACTIVA");
+        return this;
+    }
+
     public UserBuilder withPermission(String permission){
         this.permissions.add(permission);
         return this;

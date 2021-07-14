@@ -1,8 +1,18 @@
 package cl.tuten.cases;
 
 import cl.tuten.TutenTestCaseBase;
+import cl.tuten.core.bo.TutenAdministrator;
+import cl.tuten.core.bo.TutenUserRole;
+import cl.tuten.core.rest.LoginREST;
+import cl.tuten.core.rest.RoleREST;
+import cl.tuten.core.rest.dto.RoleDTO;
+import cl.tuten.utils.builders.RoleBuilder;
+import cl.tuten.utils.builders.UserBuilder;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
+
+import javax.ws.rs.core.Response;
 
 /**
  * Casos de pruebas para validar el recurso de rol
@@ -28,6 +38,14 @@ public class RoleTest extends TutenTestCaseBase {
      * */
     @Test
     public void testCreateRole() throws Exception{
+        final RoleREST rest = (RoleREST) container.getContext().lookup("java:global/LoginREST/RoleREST");
+
+        final RoleDTO dto = new RoleDTO();
+        dto.setId("ROLE_MEGAMAN");
+        dto.setName("SUPERADMIN");
+        final Response response = rest.post("", dto);
+
+        Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
 
     }
 
@@ -39,7 +57,18 @@ public class RoleTest extends TutenTestCaseBase {
      * */
     @Test
     public void testCreateBadRole() throws Exception{
-        //codigo correspondiente = BAD_DATA
+        final RoleREST rest = (RoleREST) container.getContext().lookup("java:global/LoginREST/RoleREST");
+
+        final RoleDTO dto = new RoleDTO();
+        dto.setId("ROLE_MEGAMAN");
+        dto.setName("SUPERADMIN CON NOMBRE SUPER LARGO MUY MUY LARGO");
+        final Response response = rest.post("", dto);
+
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+
+        final JSONObject json = new JSONObject(response.getEntity().toString());
+
+        Assert.assertEquals("BAD_DATA", json.getString("code"));
 
     }
 
@@ -51,7 +80,19 @@ public class RoleTest extends TutenTestCaseBase {
     * */
     @Test
     public void testLoginWithRoleDisabled() throws Exception{
-        //codigo correspondiente = ROLE_DISABLED
+        final LoginREST rest = (LoginREST) container.getContext().lookup("java:global/LoginREST/LoginREST");
+
+        final String pass = "miclave";
+        final TutenUserRole role = RoleBuilder.getBuilder().disabled().build(entityManager);
+        final TutenAdministrator user = UserBuilder.getBuilder().withPassword(pass).withRole(role).build(entityManager);
+
+        final Response response = rest.login(user.getUsername(), pass);
+
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+
+        final JSONObject json = new JSONObject(response.getEntity().toString());
+
+        Assert.assertEquals("ROLE_DISABLED", json.getString("code"));
 
     }
 
@@ -63,7 +104,24 @@ public class RoleTest extends TutenTestCaseBase {
      * */
     @Test
     public void testLoginRole() throws Exception{
-        //codigo correspondiente = SESSION_DUPLICATED
+        final LoginREST rest = (LoginREST) container.getContext().lookup("java:global/LoginREST/LoginREST");
+
+        final TutenUserRole role = RoleBuilder.getBuilder().withRoleID("OPERADORES_VENTAS").multipleSession(Boolean.FALSE).build(entityManager);
+
+        final String pass = "miclave";
+        final TutenAdministrator user = UserBuilder.getBuilder().withPassword(pass).logout().withRole(role).build(entityManager);
+
+        final Response response = rest.login(user.getUsername(), pass);
+
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        final Response response2 = rest.login(user.getUsername(), pass);
+
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response2.getStatus());
+
+        final JSONObject json = new JSONObject(response2.getEntity().toString());
+
+        Assert.assertEquals("SESSION_DUPLICATED", json.getString("code"));
 
     }
 
