@@ -114,13 +114,6 @@ ALTER TABLE mss_login.tuten_user_role OWNER TO tuten_user;
 ALTER TABLE ONLY mss_login.tuten_administrator ALTER COLUMN user_id SET DEFAULT nextval('mss_login.tuten_administrator_user_id_seq'::regclass);
 
 
---
--- TOC entry 2895 (class 2604 OID 74219)
--- Name: tuten_integration_error id; Type: DEFAULT; Schema: mss_login; Owner: tuten_user
---
-
-ALTER TABLE ONLY mss_login.tuten_integration_error ALTER COLUMN id SET DEFAULT nextval('mss_login.tuten_integration_error_id_seq'::regclass);
-
 
 --
 -- TOC entry 3037 (class 0 OID 33497)
@@ -135,21 +128,6 @@ ALTER TABLE ONLY mss_login.tuten_integration_error ALTER COLUMN id SET DEFAULT n
 --
 
 SELECT pg_catalog.setval('mss_login.tuten_administrator_user_id_seq', 188, true);
-
-
---
--- TOC entry 3042 (class 0 OID 74216)
--- Dependencies: 473
--- Data for Name: tuten_integration_error; Type: TABLE DATA; Schema: mss_login; Owner: tuten_user
---
-
---
--- TOC entry 3051 (class 0 OID 0)
--- Dependencies: 472
--- Name: tuten_integration_error_id_seq; Type: SEQUENCE SET; Schema: mss_login; Owner: tuten_user
---
-
-SELECT pg_catalog.setval('mss_login.tuten_integration_error_id_seq', 1, false);
 
 
 --
@@ -181,14 +159,6 @@ ALTER TABLE ONLY mss_login.tuten_user_role
 ALTER TABLE ONLY mss_login.tuten_administrator
     ADD CONSTRAINT administrator_pk PRIMARY KEY (user_id);
 
-
---
--- TOC entry 2914 (class 2606 OID 74225)
--- Name: tuten_integration_error tuten_integration_error_pkey; Type: CONSTRAINT; Schema: mss_login; Owner: tuten_user
---
-
-ALTER TABLE ONLY mss_login.tuten_integration_error
-    ADD CONSTRAINT tuten_integration_error_pkey PRIMARY KEY (id);
 
 
 --

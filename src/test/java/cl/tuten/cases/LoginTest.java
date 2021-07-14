@@ -113,6 +113,8 @@ public class LoginTest extends TutenTestCaseBase {
 
         final TutenAdministrator session = UserBuilder.getBuilder().withUsername("benito")
                                             .withPermission("DISABLE_USER").withId(100L).build(entityManager);
+
+
         final TutenAdministrator user = UserBuilder.getBuilder().withRole(session.getRole()).build(entityManager);
 
         final Response response = rest.disable(user.getUsername(), session.getSessionToken());
@@ -140,7 +142,6 @@ public class LoginTest extends TutenTestCaseBase {
         final JSONObject json = new JSONObject(response.getEntity().toString());
 
         Assert.assertEquals("USER_DISABLED", json.getString("code"));
-
     }
 
 }
